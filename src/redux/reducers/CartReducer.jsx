@@ -1,39 +1,42 @@
+import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions/CartAction';
 
-import { ADD_TO_CART } from '../actions/cartAction'; 
 const initialState = {
-    cartItems:[] ,
+  cartItems: [],
 };
 
-const cartReducer = (state = initialState ,actions)=>{
-    switch(actions.type){
-        case ADD_TO_CART :
-            const existingProduct  = state.cartItems.find(
-                (item)=> item.id === actions.payload.id
+const cartReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ADD_TO_CART:
+      const existingProduct = state.cartItems.find(
+        (item) => item.id === action.payload.id
+      );
 
-            );
-             if(existingProduct){
-                return {
-                    ...state,
-                    cartItems: state.cartItems.map((item)=>
-                        item.id === actions.payload.id
-                    ?{...items , quantity:item.quantity+1}
-                    : item 
+      if (existingProduct) {
+        return {
+          ...state,
+          cartItems: state.cartItems.map((item) =>
+            item.id === action.payload.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          ),
+        };
+      } else {
+        return {
+          ...state,
+          cartItems: [...state.cartItems, { ...action.payload, quantity: 1 }],
+        };
+      }
 
-                    ),
-                };
-             }else{
+    case REMOVE_FROM_CART:
+  return {
+    ...state,
+    cartItems: state.cartItems.filter(item => item.id !== action.payload),
+  };
 
-                 return {
-                     ...state , 
-                     cartItems:[...state.cartItems , {...actions.payload , quantity:1}],
-                 }
 
-             }    
-            
-            default :
-            return state;
-    }
-    
+    default:
+      return state;
+  }
 };
 
 export default cartReducer;
