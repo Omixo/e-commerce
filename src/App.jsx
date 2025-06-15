@@ -9,7 +9,7 @@ import CartPage from './components/Cart';
     <BrowserRouter> 
 
 
-     <loader></loader> : 
+     <loader></loader> 
       <div className="bg-gray-100 min-h-screen">
         <Navbar /> 
         <Routes>

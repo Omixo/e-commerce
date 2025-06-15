@@ -5,7 +5,7 @@ import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 function* fetchProducts (){
     try {
         // action call krdege jo set krega loader = true
-        const response = yield call(axios.get  , 'https://fakestoreapi.com/products')
+const response = yield call(axios.get, 'https://fakestoreapi.com/products');
         // action call krdege jo set krega loader = false
 
         yield put(setProducts(response.data));

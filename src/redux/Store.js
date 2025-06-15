@@ -1,22 +1,22 @@
-
-import {  createStore,applyMiddleware, combineReducers } from 'redux'
-import createSagaMiddleware from 'redux-saga'
-import productReducers from './reducers/productReducer'
-import productSaga from './sagas/productSaga'
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import createSagaMiddleware from 'redux-saga';
+import productReducer from './reducers/productReducer';
 import cartReducer from './reducers/cartReducer';
+import productSaga from './sagas/productSaga';
 
 const rootReducer = combineReducers({
-    product:productReducers , 
-    cart:cartReducer ,
+  product: productReducer,
+  cart: cartReducer,
 });
-// create the saga middleware
-const sagaMiddleware = createSagaMiddleware() ;
 
-const store = createStore(rootReducer  , applyMiddleware(sagaMiddleware))
+const sagaMiddleware = createSagaMiddleware();
 
-// then run the saga
-// sagaMiddleware.run(mySaga)
-sagaMiddleware.run(productSaga)
-// render the application
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
+);
 
-export default store ;
+sagaMiddleware.run(productSaga);
+
+export default store;
