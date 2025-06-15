@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <nav className="shadow-md bg-gradient-to-r from-purple-600 to-indigo-600 px-6 md:px-12 py-4 flex items-center justify-between rounded-b-3xl sticky top-0 z-50">
       <div className="text-white font-bold text-3xl tracking-wide hover:scale-105 transition duration-300">
-        <Link to="/">🛍️ E-Shop</Link>
+        <Link to="/">🛍️ E-Commerce</Link>
       </div>
 
       <div className="relative">

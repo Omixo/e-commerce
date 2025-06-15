@@ -2,26 +2,25 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart } from '../redux/actions/CartAction';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart?.cartItems || []);
 
   const handleRemove = (id) => {
     dispatch(removeFromCart(id));
   };
 
-  // Basic calculations
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const subTotal = cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
-
-  // Charges
   const gst = subTotal * 0.18;
   const deliveryCharge = subTotal * 0.10;
   const grandTotal = (subTotal + gst + deliveryCharge).toFixed(2);
 
   return (
-    <div className="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen">
+    <div className="p-6 bg-gradient-to-b from-gray-100 to-white min-h-screen pb-48">
       <h2 className="text-5xl font-extrabold text-center mb-12 text-gray-800 tracking-tight">
         🛒 Your Cart
       </h2>
@@ -33,7 +32,8 @@ const CartPage = () => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6 mb-20">
+          {/* Cart Items */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6 mb-10">
             <AnimatePresence>
               {cartItems.map((item) => (
                 <motion.div
@@ -73,22 +73,42 @@ const CartPage = () => {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-5px_15px_rgba(0,0,0,0.1)] px-6 py-6 flex flex-col md:flex-row justify-between items-center z-50 rounded-t-2xl"
+            className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-5px_15px_rgba(0,0,0,0.1)] px-6 py-6 flex flex-col md:flex-row justify-between items-start md:items-center z-50 rounded-t-2xl gap-4"
           >
-            <div className="text-gray-800 text-sm md:text-base">
-              <p className="font-medium">🧾 Total Items: <span className="font-bold">{totalItems}</span></p>
-              <p className="text-gray-600">Subtotal: ₹{subTotal.toFixed(2)}</p>
-              <p className="text-gray-600">GST (18%): ₹{gst.toFixed(2)}</p>
-              <p className="text-gray-600">Delivery (10%): ₹{deliveryCharge.toFixed(2)}</p>
-            </div>
+           <div className="text-gray-800 text-sm md:text-base">
+  <p className="font-medium">🧾 Total Items: <span className="font-bold">{totalItems}</span></p>
+  <p className="text-gray-600">Subtotal: ₹{subTotal.toFixed(2)}</p>
+  <p className="text-gray-600">GST (18%): ₹{gst.toFixed(2)}</p>
+  <p className="text-gray-600">Delivery (10%): ₹{deliveryCharge.toFixed(2)}</p>
+  <p className="text-green-600 font-bold text-lg mt-2">Grand Total: ₹{grandTotal}</p>
 
-            <div className="text-xl font-bold text-green-600 mt-4 md:mt-0">
-              Grand Total: ₹{grandTotal}
-            </div>
-          </motion.div>
-        </>
-      )}
-    </div>
+  {/* Clear Cart Button */}
+  <button
+    onClick={() => dispatch({ type: 'CLEAR_CART' })}
+    className="mt-3 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white px-5 py-2 rounded-xl font-semibold shadow-md transition-all duration-300"
+  >
+    🧹 Clear Cart
+  </button>
+
+  {/* Back Button below Clear Cart */}
+  <button
+    onClick={() => window.history.back()}
+    className="mt-3 bg-gradient-to-r from-gray-400 to-gray-600 hover:from-gray-500 hover:to-gray-700 text-white px-5 py-2 rounded-xl font-medium shadow-md transition-all duration-300"
+  >
+    ⬅️ Back to Shop
+  </button>
+</div>
+            <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate('/payment')}
+                className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white px-6 py-3 rounded-xl font-semibold shadow-md transition-all duration-300"
+              >
+                Proceed to Payment 💳
+              </motion.button>
+            </motion.div>
+          </>
+        )}
+      </div>  
   );
 };
 

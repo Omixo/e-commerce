@@ -3,6 +3,10 @@ import ProductList from './components/ProductList';
 import Navbar from './components/Navbar';
 import { BrowserRouter , Routes , Route } from 'react-router-dom';
 import CartPage from './components/Cart';
+import PaymentPage from './components/PaymentPage'; // add this
+
+
+
 
  const App = () => {
   return (
@@ -14,7 +18,9 @@ import CartPage from './components/Cart';
         <Navbar /> 
         <Routes>
           <Route path="/" element={<ProductList />} />
+          
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/payment" element={<PaymentPage />} />  // add route
         </Routes>
       </div>
     </BrowserRouter>
